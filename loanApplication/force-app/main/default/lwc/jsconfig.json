@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/createBondOffering": [
+                "createBondOffering/createBondOffering.js"
+            ],
+            "c/loanCommunicationStatusCount": [
+                "loanCommunicationStatusCount/loanCommunicationStatusCount.js"
+            ],
+            "c/newLoanSearchComponent": [
+                "newLoanSearchComponent/newLoanSearchComponent.js"
+            ],
+            "c/paginationParent": [
+                "paginationParent/paginationParent.js"
+            ],
+            "c/paginatorBottom": [
+                "paginatorBottom/paginatorBottom.js"
+            ],
+            "c/recordList": [
+                "recordList/recordList.js"
+            ],
+            "c/tableRowComponent": [
+                "tableRowComponent/tableRowComponent.js"
+            ]
+        }
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

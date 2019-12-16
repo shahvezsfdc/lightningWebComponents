@@ -1,0 +1,122 @@
+<template>
+    <lightning-card title="Responsys SMS Detailed Report" icon-name="utility:anchor">
+        <div class="slds-m-left_medium">
+            <template if:true={ProductValues.data}>
+                <lightning-dual-listbox name="Products" label="Products" source-label="Available Products"
+                    selected-label="Selected Products" field-level-help="Select the Products from the List"
+                    options={ProductValues.data.values} onchange={handleProductChange} required>
+                </lightning-dual-listbox>
+
+                <div class="slds-form-element__label slds-form slds-grid slds-m-top_small">
+                    <lightning-input type="date" class="slds-size_1-of-2" name="startDate" label="Start Date"
+                        onchange={handleStartDate} required>
+                    </lightning-input>
+                    <lightning-input type="date" class="slds-size_1-of-2" name="endDate" label="End Date"
+                        onchange={handleEndDate} required></lightning-input>
+                </div>
+
+                <div class="slds-form-element__label slds-form slds-grid">
+                    <lightning-input type="text" class="slds-size_1-of-2" name="lan" label="LAN"
+                        onchange={handleLANChange}>
+                    </lightning-input>
+                    <lightning-combobox class="slds-size_1-of-2" value={smsTypeValues} options={options}
+                        placeholder="Select SMS Type" label="SMS Type" onchange={handleSMSTypeChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-form slds-m-top_small">
+                    <lightning-button label="Submit" onclick={getLoanDetails}>
+                    </lightning-button>
+                    <lightning-button variant="brand" name="detailReport" label="Detailed Report"
+                        onclick={getDetailedReport} disabled={isDisabled}>
+                    </lightning-button>
+                </div>
+            </template>
+
+            <template if:true={toggleSpinner}>
+                <div>
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+
+    <template if:true={Opportunities}>
+        <lightning-card title="Summary Report" icon-name="utility:table">
+            <div class="slds-m-left_medium" style="overflow: scroll;">
+                <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="SNo">#</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Product">Product</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="TotalDisbursed">Total Disbursed</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="MandatorySMS">Mandatory SMS</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="CorrectAppCount">Correct App Count</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="IncorrectAppCount">Incorrect App Count</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="TotalSMSSent">Total SMS Sent</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Responsys">Responsys</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="ValueFirst">Value First</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={Opportunities.commsPerProduct} for:item="opp" for:index="indexvar">
+                            <tr key={opp.Id}>
+                                <td>
+                                    <lightning-formatted-number value={indexvar}></lightning-formatted-number>
+                                </td>
+                                <td>
+                                    <lightning-formatted-text value={opp.productName}></lightning-formatted-text>
+                                </td>
+                                <td>
+                                    <lightning-formatted-number value={opp.commsPerLoan.length}>
+                                    </lightning-formatted-number>
+                                </td>
+                                <td>
+                                    <lightning-formatted-number value={opp.mandatorySmsCount}>
+                                    </lightning-formatted-number>
+                                </td>
+                                <td>
+                                    <lightning-formatted-number value={opp.successLoansCount}>
+                                    </lightning-formatted-number>
+                                </td>
+                                <td>
+                                    <a href="/apex/CommunicationMonitoringVF" onclick={getFailedCommunicationReport}
+                                        data-product={opp.productName}>{opp.failedLoansCount}</a>
+                                </td>
+                                <td>
+                                    <lightning-formatted-number value={opp.totalSmsCount}>
+                                    </lightning-formatted-number>
+                                </td>
+                                <td>
+                                    <lightning-formatted-number value={opp.responsysSMSCount}>
+                                    </lightning-formatted-number>
+                                </td>
+                                <td>
+                                    <lightning-formatted-number value={opp.valueFirstSMSCount}>
+                                    </lightning-formatted-number>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </lightning-card>
+    </template>
+</template>

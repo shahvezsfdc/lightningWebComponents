@@ -1,0 +1,31 @@
+<template>
+    <td>
+        <lightning-input type="checkbox" name="selectInvestorBuy" onchange={handleRowSelect} data-key={investors.Id}
+            checked={investors.checked} disabled={investors.disabled}>
+        </lightning-input>
+    </td>
+    <td>
+        <lightning-input type="number" name="units" style="width: 30%; position: relative; bottom: 20px"
+            onchange={handleUnitsChange} data-key={investors.Id} value={investors.units} disabled={investors.disabled}>
+        </lightning-input>
+    </td>
+    <td>
+        <template if:true={bondBuyStatus.data}>
+            <lightning-combobox class="slds-size_1-of-2" value={investors.status} options={bondBuyStatus.data.values}
+                placeholder="New" onchange={handlebondBuyStatusChange} disabled={investors.disabled}
+                style="position: relative; bottom: 20px" data-key={investors.Id}>
+            </lightning-combobox>
+        </template>
+</td>
+<td>
+
+    <lightning-formatted-text value={investors.investorName}>
+    </lightning-formatted-text>
+
+</td>
+<td>
+    <lightning-formatted-text value={investors.investorType}>
+    </lightning-formatted-text>
+
+</td>
+</template>

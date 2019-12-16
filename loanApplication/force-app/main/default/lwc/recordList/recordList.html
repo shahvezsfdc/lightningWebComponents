@@ -1,0 +1,141 @@
+<template>
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-opportunity">
+                            <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                <use xlink:href="custom:custom57"></use>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span>Bond Offering</span>
+                                    <template if:false={editBondBuy}>
+                                        <span class="slds-page-header__title slds-truncate"
+                                            title="New Bond Offering">New Bond
+                                            Offering</span>
+                                    </template>
+<template if:true={editBondBuy}>
+                                        <span class="slds-page-header__title slds-truncate"
+                                            title="Edit Bond Offering">{name}</span>
+                                    </template>
+</h1>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<lightning-card>
+    <div class="slds-p-left_medium">
+        <lightning-record-edit-form object-api-name={bondOfferingObject} record-id={getIdFromParentOnEdit} columns="2" onsuccess={handleBondOfferingCreated}>
+            <div class="slds-grid slds-p-bottom_medium">
+                <div>
+                    <h3 style="font-size: 130%; font-weight:bold">
+                        Bond Offering Builder
+                    </h3>
+                </div>
+                <div class="slds-grid slds-align_absolute-center slds-p-right_x-large" style="position:relative; right:80px;">
+                    <div class="slds-p-left_small">
+                        <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleReset}>
+                        </lightning-button>
+                    </div>
+                    <div class="slds-p-left_small">
+                        <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
+                    </div>
+                </div>
+            </div>
+            <h2 style="background-color: rgb(174, 224, 226); font-weight:bold">
+                Bond Offering Details
+            </h2>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input-field field-name="Name" style="width: 50%; font-weight:bold" required>
+                    </lightning-input-field>
+                    <lightning-input-field field-name="Client__c" style="width: 50%; font-weight:bold" required>
+                    </lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-2" style="position: relative; left:130px">
+                    <lightning-input-field field-name="Sales_Rep__c" style="width: 50%; font-weight:bold" required>
+                    </lightning-input-field>
+                    <lightning-input-field field-name="Interest_Rate__c" style="width: 50%; font-weight:bold" required>
+                    </lightning-input-field>
+                </div>
+            </div>
+
+            <h2 style="background-color: rgb(174, 224, 226); font-weight:bold">
+                Bond Offering Progress
+            </h2>
+            <div>
+                <lightning-input-field field-name="Units_Sold__c" style="width: 20%; font-weight:bold" disabled>
+                </lightning-input-field>
+                <lightning-input-field field-name="Units_Remaining__c" style="width: 20%; font-weight:bold" disabled>
+                </lightning-input-field>
+                <lightning-input-field field-name="Units_Pending__c" style="width: 20%; font-weight:bold" disabled>
+                </lightning-input-field>
+            </div>
+        </lightning-record-edit-form>
+    </div>
+
+    <div class="slds-p-left_medium">
+        <h2 style="background-color: rgb(174, 224, 226); font-weight:bold">
+            Investor Buys
+        </h2>
+        <div class="slds-m-around_xx-small" style="width: 34%;">
+            <div class="slds-form_horizontal">
+                <lightning-combobox value={selectedInvestorType} options={options} placeholder="Selct Invetor Type" label="Investor Type Filter" onchange={handleInvestorTypeComboboxChange} style="font-weight:bold">
+                </lightning-combobox>
+            </div>
+        </div>
+        <div>
+            <table id="investorBuysTable" class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="Select">Select</div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="Units">Units</div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="Status">Status</div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="InvestorName">
+                                Investor Name
+                            </div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="CorrectAppCount">
+                                Investor Type
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={investorPerPage} for:item="inv">
+                            <c-table-row-component key={inv.Id} investors={inv} onselectedrow={handleSelectedRows}
+                                edit-bond-buy={editBondBuy} investor-buys={investorBuys} units={units} status={status}
+                                current-page={currentpage} bond-buy-id={inv.bondBuyId} is-checked={checked}
+                                style="width: 35px;">
+                            </c-table-row-component>
+                        </template>
+                </tbody>
+            </table>
+        </div>
+        <template if:true={totalpages}>
+                <p class="slds-m-vertical_medium content">
+                    Total records: <b>{totalrecords} </b> Page <b>{currentpage}</b> of
+                    <b> {totalpages}</b>
+                </p>
+            </template>
+    </div>
+</lightning-card>
+</template>
